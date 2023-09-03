@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Páginas{% endblock %}
+{% block content %}
+{% include "pages/include/top_menu.html" %}
+
+    <main role="main">
+      <div class="container mb-4">
+        {% for p in page_list|dictsort:"id" reversed %}
+          <div class="row mt-3">
+            <div class="col-md-9 mx-auto">
+              <h2 class="mb-4">{{p.title}}</h2>
+              <div>
+                <p>{{p.content|striptags|truncatechars:"200"}}</p>
+                <p><a href="{% url 'page' p.id %}">Leer más</a>
+                {% if request.user.is_staff %}
+                    | <a href="{% url 'update' p.id %}">Editar</a>
+                    | <a href="{% url 'delete' p.id %}">Borrar</a>
+                {% endif %}
+                </p>
+              </div>
+            </div>
+          </div>
+      {% endfor %}
+      </div>
+    </main>
+{% endblock %}
